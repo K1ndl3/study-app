@@ -1,0 +1,9 @@
+TODO1: 
+    - Finish implementation of all buttons
+        -todo1: move up
+        -todo2: move down
+        -todo3: finshed
+TODO2:
+    - CSS Styling for todolist
+TODO3:
+    - Implement stopwatch and todolist in one component
