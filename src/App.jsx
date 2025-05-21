@@ -1,5 +1,5 @@
 import Stopwatch from './stopwatch/Stopwatch'
-import Todo from './assets/Todo/Todo'
+import Todo from './Todo/Todo'
 import './App.css'
 
 function App() {
@@ -13,3 +13,4 @@ function App() {
 }
 
 export default App
+

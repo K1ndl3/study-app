@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Todo.css"
 function Todo() {
 
@@ -30,6 +30,9 @@ function Todo() {
 
     const [task, setTask] = useState("");
     const [taskList, setTaskList] = useState(["t1", "t2", "t3"]);
+    const [numTaskFinished, setNumTaskFinshed] = useState(0);
+    const [taskLeft, setTaskLeft] = useState(taskList.length);
+
 
     function handleInput(e) {
         setTask(e.target.value);
@@ -39,14 +42,49 @@ function Todo() {
         if (task.trim() !== ""){
             setTaskList(current_state => [...current_state, task]);
             setTask("");
+            setTaskLeft(prev => prev + 1);
+        }
+    }
+
+    function moveTaskUp(indexToRemove) {
+
+        if (indexToRemove > 0) {
+            const newArray = [...taskList];
+            [newArray[indexToRemove], newArray[indexToRemove - 1]] = [newArray[indexToRemove - 1],newArray[indexToRemove]];
+            setTaskList(newArray);
+        }
+
+    }
+
+    function moveTaskDown(indexToRemove) {
+        if (indexToRemove < taskList.length - 1) {
+            const newArray = [...taskList];
+            [newArray[indexToRemove], newArray[indexToRemove + 1]] = [newArray[indexToRemove + 1],newArray[indexToRemove]];
+            setTaskList(newArray);
         }
     }
 
     function deleteTask(targetIndex) {
-        setTaskList(current_state => current_state.filter((_,index) => index !== targetIndex))
+        setTaskList(current_state => current_state.filter((_,index) => index !== targetIndex));
+        setTaskLeft(previous => previous - 1);
     }
+
+    function finishTask(targetIndex) {
+        setTaskList(current_state => current_state.filter((_,index) => index !== targetIndex));
+        setNumTaskFinshed(previous => previous + 1);
+    }
+
+    useEffect(() => {
+        if ((numTaskFinished === taskLeft) && (numTaskFinished !== 0)) {
+            alert("CONGRAT! You finished all of your tasks.");
+            setNumTaskFinshed(0);
+            setTaskLeft(0);
+        }
+    },[numTaskFinished])
+
     return (<>
         <div className="todo">
+            
             <h1 className="header">TO-DO LIST</h1>
             <div className="input-field">
                 <input
@@ -55,19 +93,22 @@ function Todo() {
                     value={task}
                     onChange={(e) => handleInput(e)}
                 ></input>
-                <button className="enter-button" onClick={() => addTask()}>{ADD_BUTN_SVG}</button>
+                <span className="utilitites">
+                    <button className="enter-button" onClick={() => addTask()}>{ADD_BUTN_SVG}</button>
+                    <p className="progress-count">{numTaskFinished} / {taskLeft}</p>
+                </span>
             </div>
             <div className="list">
                 <ol className="ordered-list">
                     {taskList.map((task, index) => 
                     <li key={index} className="list-element">
                         <span className="move-button">
-                            <button className="up-button">{UP_BTN_SVG}</button>
-                            <button className="down-button">{DOWN_BTN_SVG}</button>
+                            <button className="up-button" onClick={() => moveTaskUp(index)}>{UP_BTN_SVG}</button>
+                            <button className="down-button" onClick={() => moveTaskDown(index)}>{DOWN_BTN_SVG}</button>
                         </span>
                         <span className="task">{task}</span>
                         <span className="edit-button">
-                            <button className="finish-button">{FINISH_BTN_SVG}</button>
+                            <button className="finish-button" onClick={() => finishTask(index)}>{FINISH_BTN_SVG}</button>
                             <button className="delete-button" onClick={() => deleteTask(index)}>{DETELE_BUTN_SVG}</button>
                         </span>
                     </li>

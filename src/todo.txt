@@ -1,8 +1,10 @@
 TODO1: 
     - Finish implementation of all buttons
-        -todo1: move up
-        -todo2: move down
-        -todo3: finshed
+        -todo1: move up [DONE]
+        -todo2: move down [DONE]
+        -todo3: finshed [DONE]
+        // when you delete a task, the total task you need to finish decreases
+        // when you finish a task, you increment taskFinished out of total task
 TODO2:
     - CSS Styling for todolist
 TODO3:
